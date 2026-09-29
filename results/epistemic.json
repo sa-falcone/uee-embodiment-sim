@@ -1,0 +1,46 @@
+[
+  {
+    "label": "GHLT uninformative, controller calibrated",
+    "UEE": 1.4465833333333333,
+    "utility_only": 1.4206666666666665,
+    "diff": 0.025916666666666668,
+    "ci95": [
+      0.0037783704694703685,
+      0.04805496286386297
+    ],
+    "n_differing": 23
+  },
+  {
+    "label": "GHLT uninformative, controller unaware",
+    "UEE": 0.861,
+    "utility_only": 0.8638333333333332,
+    "diff": -0.002833333333333333,
+    "ci95": [
+      -0.006553656770459276,
+      0.0008869901037926093
+    ],
+    "n_differing": 5
+  },
+  {
+    "label": "signal noise 0.45",
+    "UEE": 1.6478333333333333,
+    "utility_only": 1.6495,
+    "diff": -0.0016666666666666672,
+    "ci95": [
+      -0.0051013730971407375,
+      0.0017680397638074033
+    ],
+    "n_differing": 2
+  },
+  {
+    "label": "continuous cue weighting",
+    "UEE": 1.5130833333333333,
+    "utility_only": 1.5098333333333331,
+    "diff": 0.0032500000000000007,
+    "ci95": [
+      -0.00312,
+      0.009620000000000002
+    ],
+    "n_differing": 1
+  }
+]

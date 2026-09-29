@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the preprint."
+title: "UEE embodiment simulation: code and results for 'Embodiment-aware control by inference over the operator: a simulation study'"
+authors:
+  - family-names: Falcone
+    given-names: Sara
+    affiliation: "Pace University, New York, USA"
+version: 1.0.0
+date-released: 2026-09-29
+license: MIT
+repository-code: "https://github.com/sa-falcone/uee-embodiment-sim"
+preferred-citation:
+  type: article
+  title: "Embodiment-aware control by inference over the operator: a simulation study"
+  authors:
+    - family-names: Falcone
+      given-names: Sara
+  year: 2026
+  notes: "Preprint. Add the arXiv identifier once assigned."
