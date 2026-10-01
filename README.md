@@ -1,8 +1,10 @@
 # UEE embodiment simulation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23044669.svg)](https://doi.org/10.5281/zenodo.23044669)
+
 Code and results for the preprint
 
-> Sara Falcone. *Embodiment-aware control by inference over the operator: a simulation study.* 2026. [arXiv link to be added]
+> Sara Falcone. *Embodiment-aware control by inference over the operator: a simulation study.* 2026. [arXiv:2609.38437](https://arxiv.org/abs/2609.38437)
 
 The Universal Embodiment Engine (UEE) is a controller that infers a device operator's hidden embodiment level and
 visuo-proprioceptive cue weighting from implicit gaze and pupil signals and task outcome, and chooses bounded device
