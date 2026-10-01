@@ -8,6 +8,7 @@ authors:
 version: 1.0.0
 date-released: 2026-09-29
 license: MIT
+doi: 10.5281/zenodo.23044669
 repository-code: "https://github.com/sa-falcone/uee-embodiment-sim"
 preferred-citation:
   type: article
@@ -16,4 +17,10 @@ preferred-citation:
     - family-names: Falcone
       given-names: Sara
   year: 2026
-  notes: "Preprint. Add the arXiv identifier once assigned."
+  doi: 10.48550/arXiv.2609.38437
+  url: "https://arxiv.org/abs/2609.38437"
+  identifiers:
+    - type: other
+      value: "arXiv:2609.38437"
+      description: "arXiv preprint"
+  notes: "Preprint, arXiv:2609.38437 [cs.RO]."
