@@ -23,6 +23,9 @@ python robustness.py           # model-operator mismatch
 python generalization.py       # out-of-family operators and population sweep
 python epistemic.py            # does the information-gain term matter?
 python figures.py              # regenerates figures/ from results/
+python grounding.py            # parameter grounding against published statistics (v1.1)
+python analyses_v2.py          # rule baselines, task-success proxy, ten seeds, sensitivity (v1.1)
+python analyses_v2b.py         # wider tuning grids for the rule baselines (v1.1)
 ```
 
 Each script runs in a few minutes on a laptop (tested with Python 3.14). All random seeds are fixed and ties in action
@@ -39,6 +42,9 @@ selection are broken deterministically, so the results in `results/` are reprodu
 | `generalization.py` | Continuous cue weighting, other match functions, population sweep (seed 11) | `results/generalization.json` |
 | `epistemic.py` | UEE vs the same controller without the information-gain term, hardest scenarios | `results/epistemic.json` |
 | `figures.py` | Figures 1–4 of the paper | `figures/*.pdf`, `figures/*.png` |
+| `grounding.py` | Compares model-implied quantities with published statistics; weaker signals and additive cues (seed 13) | `results/grounding.json` |
+| `analyses_v2.py` | Rule-based baselines, a world where task success does not track embodiment, ten seeds of the main and robustness comparisons, sensitivity to design choices | `results/analyses_v2.json` |
+| `analyses_v2b.py` | Wider tuning grids for the rule baselines; their robustness on the same seeds | `results/analyses_v2b.json` |
 
 ## Conditions in the main experiment
 
@@ -62,6 +68,24 @@ Thompson sampling and UCB bandits, a naive prediction-error minimizer, and an Or
 
 The benefit comes from Bayesian inference over the operator's hidden state with explicit preferences: the
 expected-utility controller matches the UEE exactly, and the model-free bandits fall well short.
+
+## Version 1.1 (revision analyses)
+
+`uee_sim.py` gained four optional parameters (`signal_strength`, `cue_combination`, `task_e_effect`, `e_prior`); with
+their defaults it reproduces every v1.0 result exactly. The new analyses show:
+
+- **Seeds.** Across ten seeds, the UEE's benefit over Mechanical Transparency was +0.90 (SD 0.03) and its gap to the
+  Oracle −0.013 (SD 0.004).
+- **Rule baselines.** A threshold rule on gaze-hand lead time, tuned on the main operators, came within 0.05 of the
+  UEE; a trigger rule on the embodiment signatures reached 0.17 below it. Each rule failed when its signal carried no
+  information, whereas the UEE degraded less, provided its model was calibrated.
+- **Embodiment signals as the objective.** When task success carries no information about embodiment, a controller
+  with only a task preference fell from +0.83 to +0.14 over Mechanical Transparency, while the embodiment preference
+  kept +0.83.
+- **Design choices.** Varying preferences, dwell, prior, gain floor and assumed noise left the benefit at +0.88 to +0.89.
+- **Grounding.** The model reproduces the published correlation between embodiment and task performance across people,
+  and embodiment develops on a time scale of seconds; it does not reproduce the absence of cue interactions, which is
+  tested with additive-cue operators (+0.62 vs Oracle +0.63, ten seeds).
 
 ## Caveat
 

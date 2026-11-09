@@ -77,10 +77,13 @@ def softbins(mu, width=0.55, n=3):
 
 
 # ------------------------------------------------------------------ model components
-def embodiment_transition(up_rate=0.25, down_rate=0.25, low_gain_penalty=0.25, lapse=LAPSE, w_pos=None, match_fn=match_gauss):
+def embodiment_transition(up_rate=0.25, down_rate=0.25, low_gain_penalty=0.25, lapse=LAPSE, w_pos=None, match_fn=match_gauss,
+                          cue_combination='product'):
     """B_E with shape (E', E, W, S): embodiment rises with matched, informative feedback and
     falls with mismatch, with feedback so low that the body has too few cues (additive cue model), and by
-    spontaneous lapses at rate `lapse`, so that no level is absorbing."""
+    spontaneous lapses at rate `lapse`, so that no level is absorbing.
+    cue_combination: 'product' (population model, p_up ~ mu * kappa) or 'additive' (out-of-family operators,
+    p_up ~ (mu + kappa) / 2, matching the absence of cue interactions in Falcone et al. 2022a)."""
     w_pos = W_POS if w_pos is None else np.atleast_1d(w_pos)
     B = np.zeros((NE, NE, len(w_pos), NS))
     for e in range(NE):
@@ -88,7 +91,8 @@ def embodiment_transition(up_rate=0.25, down_rate=0.25, low_gain_penalty=0.25, l
             for s in range(NS):
                 g, m = SETTINGS[s]
                 mu = match_fn(w_pos[w], m)
-                p_up = min(up_rate * mu * GAIN_FACTOR[g], 0.95)
+                cue = mu * GAIN_FACTOR[g] if cue_combination == 'product' else 0.5 * (mu + GAIN_FACTOR[g])
+                p_up = min(up_rate * cue, 0.95)
                 p_down = min(down_rate * (1 - mu) + (low_gain_penalty if g == 0 else 0.0) + lapse, 0.95)
                 if e == NE - 1:
                     p_up = 0.0
@@ -135,9 +139,13 @@ def best_fixed_setting_for(positions, match_fn=match_gauss):
     return max([s for s in range(NS) if SETTINGS[s][0] == 2], key=lambda s: np.mean([stationary_E(k, s, B) for k in range(len(positions))]))
 
 
-def likelihoods(noise=0.1, pupil_conflict=0.4, ghlt_w_slope=0.35, w_pos=None, match_fn=match_gauss):
+def likelihoods(noise=0.1, pupil_conflict=0.4, ghlt_w_slope=0.35, w_pos=None, match_fn=match_gauss, signal_strength=1.0,
+                task_e_effect=1.0):
     """A matrices, each with shape (obs, E, W, S). `noise` mixes the four implicit signals toward uniform;
-    the task outcome is not mixed, so its success probability is exactly the one stated in the paper."""
+    the task outcome is not mixed, so its success probability is exactly the one stated in the paper.
+    signal_strength scales how strongly the four implicit signals depend on embodiment (1 = population model,
+    0 = the signals carry no information about embodiment). task_e_effect scales how much task success depends on
+    embodiment (1 = population model, 0 = task success carries no information about embodiment)."""
     w_pos = W_POS if w_pos is None else np.atleast_1d(w_pos)
     A = utils.obj_array(5)
     shape = (3, NE, len(w_pos), NS)
@@ -147,13 +155,13 @@ def likelihoods(noise=0.1, pupil_conflict=0.4, ghlt_w_slope=0.35, w_pos=None, ma
         for w in range(len(w_pos)):
             for s in range(NS):
                 g, m = SETTINGS[s]
-                en = e / (NE - 1)
+                en = 0.5 + signal_strength * (e / (NE - 1) - 0.5)
                 c = GAIN_FACTOR[g] * (1.0 - match_fn(w_pos[w], m))
                 pupil[:, e, w, s] = softbins(np.clip(0.75 - 0.5 * en + pupil_conflict * c, 0, 1))
                 gte[:, e, w, s] = softbins(1.0 - en)
                 ghlt[:, e, w, s] = softbins(np.clip(0.5 + ghlt_w_slope * w_pos[w] + 0.2 * (en - 0.5), 0, 1), width=0.35)
                 lat[:, e, w, s] = softbins(en)
-                p_succ = P_SUCCESS_GAIN[g] + P_SUCCESS_E[e]
+                p_succ = P_SUCCESS_GAIN[g] + task_e_effect * P_SUCCESS_E[e]
                 task[:, e, w, s] = [p_succ, 1 - p_succ]
     for i, a in enumerate([pupil, gte, ghlt, lat]):
         A[i] = (1 - noise) * a + noise / a.shape[0]
@@ -165,10 +173,10 @@ DEFAULT = best_fixed_setting()                                    # high gain, m
 
 
 def build_agent(C_task=2.0, C_embodiment=1.0, C_pupil=0.0, allowed_settings=None, noise=0.1, w_drift=0.0, w_prior=None,
-                ghlt_w_slope=0.35, info_gain=True):
+                ghlt_w_slope=0.35, info_gain=True, signal_strength=1.0, task_e_effect=1.0, e_prior=None):
     """Construct the UEE. C_* are log-preferences; allowed_settings implements the feedback floor;
     info_gain=False removes the epistemic term (expected-utility controller with the same inference)."""
-    A = likelihoods(noise=noise, ghlt_w_slope=ghlt_w_slope)
+    A = likelihoods(noise=noise, ghlt_w_slope=ghlt_w_slope, signal_strength=signal_strength, task_e_effect=task_e_effect)
     B = utils.obj_array(3)
     B[0] = embodiment_transition()                                  # (E', E, W, u): the chosen setting drives embodiment
     B[1] = ((1 - w_drift) * np.eye(NW) + w_drift / NW)[:, :, None]  # weighting stable within a session (w_drift > 0 lets beliefs track change)
@@ -182,7 +190,7 @@ def build_agent(C_task=2.0, C_embodiment=1.0, C_pupil=0.0, allowed_settings=None
     C[3] = C_embodiment * np.array([-1.0, 0.0, 1.0])                 # prefer anticipatory look-ahead (high LAT)
     C[4] = C_task * np.array([1.0, -1.0])                            # prefer task success
     D = utils.obj_array(3)
-    D[0] = np.array([0.5, 0.35, 0.15])
+    D[0] = np.array([0.5, 0.35, 0.15]) if e_prior is None else np.asarray(e_prior, float) / np.sum(e_prior)
     D[1] = np.ones(NW) / NW if w_prior is None else np.asarray(w_prior, float) / np.sum(w_prior)  # w_prior: session-start calibration
     D[2] = np.zeros(NS); D[2][DEFAULT] = 1.0                           # sessions start at the default setting
     allowed = list(range(NS)) if allowed_settings is None else list(allowed_settings)
@@ -210,7 +218,7 @@ class Operator:
     """Generative process: one simulated person with individual parameters."""
 
     def __init__(self, rng, w=None, noise=None, rate_scale=1.0, lapse_scale=1.0, pupil_conflict=0.4, ghlt_w_slope=0.35, w_switch=None,
-                 w_pos=None, match_fn=match_gauss):
+                 w_pos=None, match_fn=match_gauss, signal_strength=1.0, cue_combination='product', task_e_effect=1.0):
         """w: one of the five types. w_pos (optional): a continuous cue-weighting position in [-1, 1] instead of a type;
         match_fn: the operator's own match function (the controller always assumes match_gauss)."""
         self.rng = rng
@@ -222,9 +230,10 @@ class Operator:
         down = 0.25 * rng.uniform(0.7, 1.3) * rate_scale
         lapse = LAPSE * rng.uniform(0.5, 1.5) * lapse_scale
         own = dict(w_pos=None if w_pos is None else [w_pos], match_fn=match_fn)
-        self.B = embodiment_transition(up_rate=up, down_rate=down, lapse=lapse, **own)
+        self.B = embodiment_transition(up_rate=up, down_rate=down, lapse=lapse, cue_combination=cue_combination, **own)
         self.A = likelihoods(noise=rng.uniform(0.05, 0.25) if noise is None else noise,
-                             pupil_conflict=pupil_conflict, ghlt_w_slope=ghlt_w_slope, **own)
+                             pupil_conflict=pupil_conflict, ghlt_w_slope=ghlt_w_slope, signal_strength=signal_strength,
+                             task_e_effect=task_e_effect, **own)
         if w_pos is None:
             self.k = self.w                          # index into the operator's own matrices
         else:

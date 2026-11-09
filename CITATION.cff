@@ -5,8 +5,8 @@ authors:
   - family-names: Falcone
     given-names: Sara
     affiliation: "Pace University, New York, USA"
-version: 1.0.0
-date-released: 2026-09-29
+version: 1.1.0
+date-released: 2026-10-08
 license: MIT
 doi: 10.5281/zenodo.23044669
 repository-code: "https://github.com/sa-falcone/uee-embodiment-sim"
