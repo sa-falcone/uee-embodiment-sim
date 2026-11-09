@@ -1,0 +1,226 @@
+{
+  "tuning": {
+    "best_ghlt": {
+      "lo": 0.8,
+      "hi": 1.2,
+      "window": 120
+    },
+    "best_trigger": {
+      "theta": 0.2,
+      "window": 20
+    },
+    "top_ghlt": [
+      {
+        "lo": 0.8,
+        "hi": 1.2,
+        "window": 120,
+        "E": 1.6287777777777777
+      },
+      {
+        "lo": 0.8,
+        "hi": 1.1,
+        "window": 120,
+        "E": 1.6261111111111113
+      },
+      {
+        "lo": 0.8,
+        "hi": 1.2,
+        "window": 90,
+        "E": 1.6236666666666668
+      },
+      {
+        "lo": 0.8,
+        "hi": 1.1,
+        "window": 90,
+        "E": 1.6137222222222223
+      },
+      {
+        "lo": 0.8,
+        "hi": 1.2,
+        "window": 60,
+        "E": 1.609611111111111
+      }
+    ],
+    "top_trigger": [
+      {
+        "theta": 0.2,
+        "window": 20,
+        "E": 1.5109444444444444
+      },
+      {
+        "theta": 0.15,
+        "window": 10,
+        "E": 1.492611111111111
+      },
+      {
+        "theta": 0.25,
+        "window": 30,
+        "E": 1.4757222222222224
+      },
+      {
+        "theta": 0.2,
+        "window": 10,
+        "E": 1.4638888888888888
+      },
+      {
+        "theta": 0.25,
+        "window": 20,
+        "E": 1.4586666666666668
+      }
+    ]
+  },
+  "main_seeds": [
+    {
+      "seed": 2026,
+      "RuleGHLT-MT": 0.9012777777777777,
+      "RuleTrigger-MT": 0.7834444444444444,
+      "RuleGHLT_succ": 0.8932222222222224,
+      "RuleTrigger_succ": 0.8688888888888892,
+      "RuleGHLT_switches": 1.7933333333333332,
+      "RuleTrigger_switches": 1.3566666666666667
+    },
+    {
+      "seed": 3001,
+      "RuleGHLT-MT": 0.842111111111111,
+      "RuleTrigger-MT": 0.7697777777777777,
+      "RuleGHLT_succ": 0.8973055555555554,
+      "RuleTrigger_succ": 0.8734166666666667,
+      "RuleGHLT_switches": 1.7933333333333332,
+      "RuleTrigger_switches": 1.38
+    },
+    {
+      "seed": 3002,
+      "RuleGHLT-MT": 0.8425555555555556,
+      "RuleTrigger-MT": 0.7131666666666666,
+      "RuleGHLT_succ": 0.894388888888889,
+      "RuleTrigger_succ": 0.8693055555555558,
+      "RuleGHLT_switches": 1.7433333333333334,
+      "RuleTrigger_switches": 1.38
+    },
+    {
+      "seed": 3003,
+      "RuleGHLT-MT": 0.8370000000000001,
+      "RuleTrigger-MT": 0.7101111111111112,
+      "RuleGHLT_succ": 0.898638888888889,
+      "RuleTrigger_succ": 0.8717499999999999,
+      "RuleGHLT_switches": 1.67,
+      "RuleTrigger_switches": 1.4633333333333334
+    },
+    {
+      "seed": 3004,
+      "RuleGHLT-MT": 0.8775555555555555,
+      "RuleTrigger-MT": 0.7472222222222222,
+      "RuleGHLT_succ": 0.8946666666666666,
+      "RuleTrigger_succ": 0.8683055555555556,
+      "RuleGHLT_switches": 1.87,
+      "RuleTrigger_switches": 1.44
+    },
+    {
+      "seed": 3005,
+      "RuleGHLT-MT": 0.8376111111111111,
+      "RuleTrigger-MT": 0.7070555555555555,
+      "RuleGHLT_succ": 0.8909166666666666,
+      "RuleTrigger_succ": 0.8649166666666668,
+      "RuleGHLT_switches": 1.9,
+      "RuleTrigger_switches": 1.5533333333333332
+    },
+    {
+      "seed": 3006,
+      "RuleGHLT-MT": 0.8224444444444445,
+      "RuleTrigger-MT": 0.7180555555555556,
+      "RuleGHLT_succ": 0.8952500000000001,
+      "RuleTrigger_succ": 0.8753611111111111,
+      "RuleGHLT_switches": 1.5966666666666667,
+      "RuleTrigger_switches": 1.32
+    },
+    {
+      "seed": 3007,
+      "RuleGHLT-MT": 0.8476666666666667,
+      "RuleTrigger-MT": 0.7303333333333334,
+      "RuleGHLT_succ": 0.8892222222222224,
+      "RuleTrigger_succ": 0.866388888888889,
+      "RuleGHLT_switches": 1.7533333333333334,
+      "RuleTrigger_switches": 1.3833333333333333
+    },
+    {
+      "seed": 3008,
+      "RuleGHLT-MT": 0.832,
+      "RuleTrigger-MT": 0.7467222222222222,
+      "RuleGHLT_succ": 0.8951388888888889,
+      "RuleTrigger_succ": 0.8720277777777776,
+      "RuleGHLT_switches": 1.8466666666666667,
+      "RuleTrigger_switches": 1.42
+    },
+    {
+      "seed": 3009,
+      "RuleGHLT-MT": 0.8854444444444444,
+      "RuleTrigger-MT": 0.7472222222222222,
+      "RuleGHLT_succ": 0.8958333333333334,
+      "RuleTrigger_succ": 0.8690555555555557,
+      "RuleGHLT_switches": 1.7833333333333334,
+      "RuleTrigger_switches": 1.45
+    }
+  ],
+  "robustness": [
+    {
+      "scenario": "matched",
+      "RuleGHLT-MT": {
+        "mean": 0.8342916666666665,
+        "sd": 0.04829628608909802
+      },
+      "RuleTrigger-MT": {
+        "mean": 0.7078583333333333,
+        "sd": 0.04799934172002314
+      }
+    },
+    {
+      "scenario": "noise 0.45",
+      "RuleGHLT-MT": {
+        "mean": 0.6526416666666666,
+        "sd": 0.05836665780929349
+      },
+      "RuleTrigger-MT": {
+        "mean": 0.5302,
+        "sd": 0.05159853931323311
+      }
+    },
+    {
+      "scenario": "GHLT uninformative",
+      "RuleGHLT-MT": {
+        "mean": -0.026658333333333332,
+        "sd": 0.013122432141514087
+      },
+      "RuleTrigger-MT": {
+        "mean": 0.7078583333333333,
+        "sd": 0.04799934172002314
+      }
+    },
+    {
+      "scenario": "signals 0",
+      "RuleGHLT-MT": {
+        "mean": 0.8686166666666667,
+        "sd": 0.04525504200816187
+      },
+      "RuleTrigger-MT": {
+        "mean": -0.033225,
+        "sd": 0.047942336924195576
+      }
+    },
+    {
+      "scenario": "additive cues",
+      "RuleGHLT-MT": {
+        "mean": 0.5945666666666667,
+        "sd": 0.026953343318582627
+      },
+      "RuleTrigger-MT": {
+        "mean": 0.3492416666666666,
+        "sd": 0.02895724951342438
+      }
+    }
+  ],
+  "no_information_settings_last60": {
+    "g2m1": 0.781,
+    "g2m0": 0.113,
+    "g2m2": 0.106
+  }
+}
